@@ -1,2 +1,2 @@
 # rorm
-go get gitee.com/404669366/rorm
+go get github.com/404669366/rorm
