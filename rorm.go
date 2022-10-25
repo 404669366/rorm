@@ -59,3 +59,9 @@ func Consume(name string, callback func(delivery rmq.Delivery)) error {
 	}
 	return nil
 }
+
+func Parse(delivery rmq.Delivery) *Event {
+	event := new(Event)
+	_ = event.decode(delivery.Payload())
+	return event
+}

@@ -80,13 +80,23 @@ func (p *parse) expire() error {
 }
 
 func (p *parse) queue(data []byte) {
-	type msg struct {
-		Cmd  string
-		Data []byte
-	}
-	temp, _ := json.Marshal(&msg{
+	event := &Event{
 		Cmd:  p.HashKey,
 		Data: data,
-	})
-	_ = p.Runtime.Queue.PublishBytes(temp)
+	}
+	_ = p.Runtime.Queue.PublishBytes(event.encode())
+}
+
+type Event struct {
+	Cmd  string
+	Data []byte
+}
+
+func (e *Event) encode() []byte {
+	temp, _ := json.Marshal(e)
+	return temp
+}
+
+func (e *Event) decode(data string) error {
+	return json.Unmarshal([]byte(data), e)
 }
